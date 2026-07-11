@@ -337,12 +337,12 @@ body.scrolled #news { opacity: 0; pointer-events: none; }
   margin: 0;
 }
 
-/* large rounded-square media cards, alche-style */
+/* large rounded 16:9 media cards, alche-style */
 .work-circle {
   position: absolute;
   top: 0;
   left: 0;
-  width: min(72vmin, 700px);
+  width: min(64vw, 1000px);
   z-index: 2;
   transform: translate(120vw, 120vh); /* offscreen until JS places it */
   will-change: transform;
@@ -351,7 +351,7 @@ body.scrolled #news { opacity: 0; pointer-events: none; }
 .work-circle video,
 .work-circle iframe {
   width: 100%;
-  aspect-ratio: 1 / 1;
+  aspect-ratio: 16 / 9;
   object-fit: cover;
   display: block;
   border: 1px solid var(--hairline);
@@ -393,7 +393,7 @@ body.scrolled #news { opacity: 0; pointer-events: none; }
     padding: 20vh 1.5rem 0;
   }
   .works-label { position: static; align-self: flex-start; }
-  .work-circle { position: static; transform: none; width: min(88vw, 420px); }
+  .work-circle { position: static; transform: none; width: min(92vw, 560px); }
 }
 
 /* ---------- Coaching: thin plan rows ---------- */

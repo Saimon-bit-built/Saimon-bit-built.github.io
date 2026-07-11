@@ -236,12 +236,13 @@ document.querySelectorAll("[data-word]").forEach((el) => sectionObserver.observe
 
     circles.forEach((c, i) => {
       const t = clamp01(progress * totalSpan - STAGGER * i);
-      const half = c.offsetWidth / 2;
+      const halfW = c.offsetWidth / 2;
+      const halfH = c.offsetHeight / 2;
       const cx = lerp(start.x, end.x, t);
       const cy = lerp(start.y, end.y, t) - Math.sin(Math.PI * t) * H * 0.06;
       const scale = 0.8 + 0.3 * Math.sin(Math.PI * t);
       const rot = (t - 0.5) * 10;
-      c.style.transform = `translate(${cx - half}px, ${cy - half}px) scale(${scale}) rotate(${rot}deg)`;
+      c.style.transform = `translate(${cx - halfW}px, ${cy - halfH}px) scale(${scale}) rotate(${rot}deg)`;
 
       // track whichever circle is nearest mid-screen
       const dist = Math.hypot(cx - W / 2, cy - H / 2);
