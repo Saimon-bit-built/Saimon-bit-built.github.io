@@ -341,7 +341,7 @@ body.scrolled #news { opacity: 0; pointer-events: none; }
   position: absolute;
   top: 0;
   left: 0;
-  width: min(46vmin, 400px);
+  width: min(72vmin, 700px);
   aspect-ratio: 1 / 1;
   border-radius: 50%;
   overflow: hidden;
@@ -405,7 +405,7 @@ body.scrolled #news { opacity: 0; pointer-events: none; }
     padding: 20vh 1.5rem 0;
   }
   .works-label { position: static; align-self: flex-start; }
-  .work-circle { position: static; transform: none; width: min(75vw, 320px); }
+  .work-circle { position: static; transform: none; width: min(88vw, 420px); }
 }
 
 /* ---------- Coaching: thin plan rows ---------- */
