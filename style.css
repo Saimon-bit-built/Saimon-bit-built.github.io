@@ -337,20 +337,13 @@ body.scrolled #news { opacity: 0; pointer-events: none; }
   margin: 0;
 }
 
+/* large rounded-square media cards, alche-style */
 .work-circle {
   position: absolute;
   top: 0;
   left: 0;
   width: min(72vmin, 700px);
-  aspect-ratio: 1 / 1;
-  border-radius: 50%;
-  overflow: hidden;
   z-index: 2;
-  border: 1px solid var(--hairline);
-  background: rgba(22, 24, 31, 0.65);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.55);
   transform: translate(120vw, 120vh); /* offscreen until JS places it */
   will-change: transform;
 }
@@ -358,37 +351,32 @@ body.scrolled #news { opacity: 0; pointer-events: none; }
 .work-circle video,
 .work-circle iframe {
   width: 100%;
-  height: 100%;
+  aspect-ratio: 1 / 1;
   object-fit: cover;
   display: block;
-  border: 0;
+  border: 1px solid var(--hairline);
+  border-radius: 22px;
+  background: rgba(22, 24, 31, 0.65);
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.55);
 }
 
-.work-circle-inner {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 0.6rem;
-  color: var(--muted);
-  background: radial-gradient(circle at 30% 30%, rgba(255, 70, 85, 0.07), transparent 60%);
+.work-circle figcaption {
+  margin-top: 0.9rem;
+  padding-left: 0.2rem;
+  text-shadow: 0 1px 10px rgba(14, 16, 20, 0.9);
 }
-.work-circle-inner span {
-  width: 54px; height: 54px;
-  display: grid; place-items: center;
-  border-radius: 50%;
-  background: #fff;
-  color: var(--accent);
-  font-size: 1.05rem;
-  box-shadow: 0 8px 30px rgba(20, 22, 28, 0.12);
+.work-circle figcaption strong {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 650;
+  letter-spacing: 0.02em;
 }
-.work-circle-inner p {
+.work-circle figcaption span {
   font-size: 0.68rem;
-  font-weight: 700;
+  font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.25em;
+  letter-spacing: 0.22em;
+  color: var(--muted);
 }
 
 /* Static fallback: phones + reduced motion */
@@ -617,9 +605,8 @@ body.has-cursor, body.has-cursor * { cursor: none !important; }
 .plan-side a { display: inline-block; transition: transform 0.25s, color 0.2s, border-color 0.2s; }
 .plan-row:hover .plan-side a { transform: translateX(5px); color: var(--accent); border-color: var(--accent); }
 
-/* ---------- Highlight circle: ring pulse at center ---------- */
-/* box-shadow pulse — not clipped by the circle's overflow:hidden */
-.work-circle.is-center {
+/* ---------- Highlight card: ring pulse at center ---------- */
+.work-circle.is-center video {
   animation: ringPulse 1.8s ease-out infinite;
 }
 @keyframes ringPulse {
