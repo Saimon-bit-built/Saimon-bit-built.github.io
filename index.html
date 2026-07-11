@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Shraendraight — Valorant Coaching</title>
+  <meta name="description" content="Valorant coaching by Shraendraight — Ascendant peak, playing since launch. Escape your rank with honest VOD reviews and live 1-on-1 sessions." />
+  <meta name="theme-color" content="#0e1014" />
+  <meta name="color-scheme" content="dark" />
+  <link rel="icon" type="image/png" href="assets/brand/favicon.png" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- Intro loader: logo draws itself, then fills, then tagline (click to skip) -->
+  <div id="intro" aria-hidden="true">
+    <div class="intro-lines" aria-hidden="true">
+      <i></i><i></i><i></i><i></i><i></i>
+    </div>
+    <div class="intro-mark">
+      <svg class="intro-draw" viewBox="-6 -6 491 362" aria-hidden="true">
+        <path d="M108.8 0 L293.8 0 L261.1 51.7 L136 51.7 L117 95.4 L402.6 95.4 L473.3 103.4 L435.2 159 L375.4 242.5 L185 242.5 L130.6 341.9 L59.8 341.9 L157.8 198.8 L337.3 194.8 L359 159 L2.7 159 L38.1 95.4 L51.7 95.4 Z" />
+      </svg>
+      <img src="assets/brand/logo.png" alt="" class="intro-logo" />
+    </div>
+    <p class="intro-tag">Shraendraight&nbsp;&nbsp;·&nbsp;&nbsp;Valorant Coaching</p>
+  </div>
+
+  <!-- Film grain overlay -->
+  <div id="grain" aria-hidden="true"></div>
+
+  <!-- Custom crosshair cursor -->
+  <div id="cursor" aria-hidden="true">
+    <svg viewBox="0 0 32 32">
+      <g stroke="currentColor" stroke-width="2">
+        <line x1="16" y1="2"  x2="16" y2="9" />
+        <line x1="16" y1="23" x2="16" y2="30" />
+        <line x1="2"  y1="16" x2="9"  y2="16" />
+        <line x1="23" y1="16" x2="30" y2="16" />
+      </g>
+      <circle cx="16" cy="16" r="1.6" fill="currentColor" stroke="none" />
+    </svg>
+  </div>
+
+  <!-- Fixed 3D scene behind everything -->
+  <canvas id="scene"></canvas>
+
+  <!-- Tiny top navigation -->
+  <header class="site-header">
+    <nav class="nav">
+      <a href="#top" class="brand">
+        <img src="assets/brand/logo.png" alt="" class="brand-logo" />
+        <span>Shraendraight</span>
+      </a>
+      <div class="nav-links">
+        <a href="#story">My story</a>
+        <a href="#highlights">Highlights</a>
+        <a href="#coaching">Coaching</a>
+        <a href="#contact">Book a session</a>
+      </div>
+    </nav>
+  </header>
+
+  <!-- HUD: bottom-left dynamic description -->
+  <aside class="hud-bl" id="info-box">
+    <p class="hud-label">Info</p>
+    <p id="info-text">Valorant coach — Ascendant peak, EU. Founding student rates now open.</p>
+  </aside>
+
+  <!-- HUD: bottom-right news (home only) -->
+  <aside class="hud-br" id="news">
+    <p class="hud-label">News</p>
+    <ul>
+      <li><span>2026.07</span>Founding student spots open — $10 VOD reviews</li>
+      <li><span>2026</span>Peak Ascendant reached — top ~2%</li>
+      <li><span>2025</span>The comeback: Gold → Diamond 2 in one year</li>
+    </ul>
+  </aside>
+
+  <main id="top">
+
+    <!-- ======== HERO: pure 3D, empty screen ======== -->
+    <section class="hero" data-word="SHRAEN" data-word-opacity="0.95" data-info="Valorant coach — Ascendant peak, EU. Founding student rates now open.">
+      <div class="scroll-hint" aria-hidden="true"><span></span></div>
+    </section>
+
+    <!-- ======== STORY ======== -->
+    <section id="story" class="section" data-word="STORY" data-word-opacity="0.12" data-info="Six years in. One comeback: Gold 2 → Ascendant.">
+      <p class="sec-label"><em>01</em> My story</p>
+      <h2>Six years of learning this game<br />the hard way — so you don't have to.</h2>
+
+      <div class="stats-row">
+        <div class="stat"><span class="stat-num" data-count="6">0</span><span class="stat-label">years in Valorant</span></div>
+        <div class="stat"><span class="stat-num stat-text">Ascendant</span><span class="stat-label">peak rank</span></div>
+        <div class="stat"><span class="stat-num" data-count="5000" data-suffix="+">0</span><span class="stat-label">hours played</span></div>
+        <div class="stat"><span class="stat-num stat-text">top ~2%</span><span class="stat-label">of all players</span></div>
+      </div>
+
+      <ol class="timeline">
+        <li class="timeline-item">
+          <span class="timeline-year">2020</span>
+          <div>
+            <h3>Day one</h3>
+            <p>Started the day Valorant launched. Instead of one-tricking, I learned every role —
+            controller, duelist, sentinel — which is why I can coach any main.</p>
+          </div>
+        </li>
+        <li class="timeline-item">
+          <span class="timeline-year">2020–22</span>
+          <div>
+            <h3>The grind — and the wall</h3>
+            <p>Climbed to Gold 2 by Episode 5, then stepped away. I know exactly what being
+            hardstuck feels like, because I lived it.</p>
+          </div>
+        </li>
+        <li class="timeline-item">
+          <span class="timeline-year">2025</span>
+          <div>
+            <h3>The comeback</h3>
+            <p>Returned after a two-year break and stopped playing on autopilot. Platinum, then
+            Diamond 2 by Act 3 — two rank tiers in a single year.</p>
+          </div>
+        </li>
+        <li class="timeline-item">
+          <span class="timeline-year">2026</span>
+          <div>
+            <h3>Peak Ascendant — and opening coaching</h3>
+            <p>The top ~2% of the ladder. Now taking my first students at founding rates:
+            the same climb, structured into sessions.</p>
+          </div>
+        </li>
+      </ol>
+    </section>
+
+    <!-- ======== HIGHLIGHTS: circles travel BR → TL ======== -->
+    <section id="highlights" class="works-scroll" data-word="WORKS" data-word-opacity="0.85" data-info="Keep scrolling — the plays come to you.">
+      <div class="works-sticky">
+        <p class="sec-label works-label"><em>02</em> Highlights</p>
+
+        <figure class="work-circle"
+                data-title="Clip 01 — [ace / clutch]"
+                data-desc="Drop an .mp4 into assets/clips/ and this circle becomes the video.">
+          <div class="work-circle-inner"><span>▶</span><p>Clip 01</p></div>
+        </figure>
+        <figure class="work-circle"
+                data-title="Clip 02 — [title]"
+                data-desc="Second highlight slot — send the clip and a one-line title.">
+          <div class="work-circle-inner"><span>▶</span><p>Clip 02</p></div>
+        </figure>
+        <figure class="work-circle"
+                data-title="Clip 03 — [title]"
+                data-desc="Third slot — best plays only.">
+          <div class="work-circle-inner"><span>▶</span><p>Clip 03</p></div>
+        </figure>
+      </div>
+    </section>
+
+    <!-- ======== TICKER ======== -->
+    <div class="ticker" aria-hidden="true">
+      <div class="ticker-track">
+        <span>VOD Review&nbsp;·&nbsp;Live 1-on-1&nbsp;·&nbsp;Rank-Up Program&nbsp;·&nbsp;EU Servers&nbsp;·&nbsp;Ascendant Peak&nbsp;·&nbsp;5000+ Hours&nbsp;·&nbsp;Founding Rates&nbsp;·&nbsp;</span>
+        <span>VOD Review&nbsp;·&nbsp;Live 1-on-1&nbsp;·&nbsp;Rank-Up Program&nbsp;·&nbsp;EU Servers&nbsp;·&nbsp;Ascendant Peak&nbsp;·&nbsp;5000+ Hours&nbsp;·&nbsp;Founding Rates&nbsp;·&nbsp;</span>
+      </div>
+    </div>
+
+    <!-- ======== COACHING ======== -->
+    <section id="coaching" class="section" data-word="COACH" data-word-opacity="0.12" data-info="Founding rates — $10 VOD · $15/hr live · $80/mo program.">
+      <p class="sec-label"><em>03</em> Coaching</p>
+      <h2>Founding student rates.<br />Locked in for good.</h2>
+      <p class="sec-sub">I'm opening my first coaching spots — early students keep these prices
+      forever. Best fit: Iron → Diamond, EU servers.</p>
+
+      <div class="plan-rows">
+        <article class="plan-row">
+          <div class="plan-name">
+            <h3>VOD Review</h3>
+            <p>Full review of one ranked game · written notes with timestamps · top 3 mistakes
+            + fixes · action items for your next 10 games</p>
+          </div>
+          <div class="plan-side">
+            <p class="plan-price">$10<span> / game</span></p>
+            <a href="#contact">Book →</a>
+          </div>
+        </article>
+
+        <article class="plan-row featured">
+          <div class="plan-name">
+            <h3>Live 1-on-1 <em>· most popular</em></h3>
+            <p>Live session on Discord · crosshair placement, positioning &amp; timing ·
+            agent &amp; role-specific coaching · we queue and review your decisions live</p>
+          </div>
+          <div class="plan-side">
+            <p class="plan-price">$15<span> / hour</span></p>
+            <a href="#contact">Book →</a>
+          </div>
+        </article>
+
+        <article class="plan-row">
+          <div class="plan-name">
+            <h3>Rank-Up Program</h3>
+            <p>4 live sessions + 2 VOD reviews monthly · personal improvement plan ·
+            priority DMs between sessions · goal: one rank tier per month</p>
+          </div>
+          <div class="plan-side">
+            <p class="plan-price">$80<span> / month</span></p>
+            <a href="#contact">Book →</a>
+          </div>
+        </article>
+      </div>
+
+      <div class="faq-list">
+        <details class="faq-item">
+          <summary>Can an Ascendant coach really help me?</summary>
+          <p>If you're Iron through Diamond — absolutely. Ascendant is the top ~2% of the ladder,
+          and the mistakes keeping you stuck are ones I've already made and fixed. Coaching is
+          about diagnosing <em>your</em> gameplay, not the coach's rank flexing.</p>
+        </details>
+        <details class="faq-item">
+          <summary>What do I need for a session?</summary>
+          <p>Discord, and for VOD reviews a recording of your game (free tools like Medal.tv or
+          Valorant's own replay work fine — I'll help you set it up).</p>
+        </details>
+        <details class="faq-item">
+          <summary>What roles and agents do you coach?</summary>
+          <p>Every role — my mains are Omen and Clove (controller), Reyna and Phoenix (duelist),
+          Sage and Killjoy (sentinel). Whatever you main, I've put serious hours on it.</p>
+        </details>
+        <details class="faq-item">
+          <summary>What region and times are you available?</summary>
+          <p>Poland, EU servers, CET. Message me on Discord and we'll find a time — other regions
+          welcome for VOD reviews, since those don't need us to queue together.</p>
+        </details>
+      </div>
+    </section>
+
+    <!-- ======== CONTACT ======== -->
+    <section id="contact" class="section contact" data-word="BOOK" data-word-opacity="0.12" data-info="Fastest reply on Discord: shraendraight.">
+      <p class="sec-label"><em>04</em> Contact</p>
+      <h2>Book a session.</h2>
+      <p class="sec-sub">Message me on Discord with your rank, role, and what you're struggling
+      with — I'll reply with available times.</p>
+
+      <div class="contact-links">
+        <button class="btn primary" id="discord-copy" type="button" data-username="shraendraight">
+          Discord — shraendraight
+        </button>
+        <a class="btn ghost" href="mailto:saimonnabi2@gmail.com">Email</a>
+        <a class="btn ghost" href="[TRACKER.GG PROFILE LINK]">tracker.gg</a>
+      </div>
+      <p class="contact-note">Click the Discord button to copy my username.</p>
+
+      <footer class="site-footer">
+        <p>© <span id="year"></span> Shraendraight — Valorant Coaching. Not affiliated with Riot Games.</p>
+      </footer>
+    </section>
+
+  </main>
+
+  <script src="https://unpkg.com/three@0.158.0/build/three.min.js"></script>
+  <script src="main.js"></script>
+</body>
+</html>
