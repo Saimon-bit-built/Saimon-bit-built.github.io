@@ -254,7 +254,15 @@ document.querySelectorAll("[data-word]").forEach((el) => sectionObserver.observe
     // while a circle holds the center, its title/desc takes over the info box
     const inWorks = rect.top < H * 0.5 && rect.bottom > H * 0.5;
     const hasCenter = inWorks && centered && bestDist < Math.min(W, H) * 0.28;
-    circles.forEach((c) => c.classList.toggle("is-center", hasCenter && c === centered));
+    circles.forEach((c) => {
+      const isCenter = hasCenter && c === centered;
+      c.classList.toggle("is-center", isCenter);
+      const v = c.querySelector("video");
+      if (v) {
+        if (isCenter && v.paused) v.play().catch(() => {});
+        else if (!isCenter && !v.paused) v.pause();
+      }
+    });
     if (hasCenter) {
       circleInfoActive = true;
       setInfo(`${centered.dataset.title} — ${centered.dataset.desc}`);
@@ -277,6 +285,21 @@ document.querySelectorAll("[data-word]").forEach((el) => sectionObserver.observe
   window.addEventListener("scroll", requestUpdate, { passive: true });
   window.addEventListener("resize", requestUpdate);
   update();
+})();
+
+/* ---------- Clip playback on phones / reduced motion (static circle layout) ---------- */
+(function initStaticClipPlayback() {
+  if (!(window.innerWidth < 768 || REDUCE_MOTION)) return;
+  const vio = new IntersectionObserver(
+    (entries) => {
+      for (const e of entries) {
+        if (e.isIntersecting) e.target.play().catch(() => {});
+        else e.target.pause();
+      }
+    },
+    { threshold: 0.6 }
+  );
+  document.querySelectorAll(".work-circle video").forEach((v) => vio.observe(v));
 })();
 
 /* ============================================================
