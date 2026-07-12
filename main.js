@@ -3,7 +3,10 @@
    Fixed Three.js scene behind a normally-scrolling page.
    ============================================================ */
 
-const REDUCE_MOTION = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+// ?static also forces the no-motion path — used for layout testing and weak devices
+const REDUCE_MOTION =
+  window.matchMedia("(prefers-reduced-motion: reduce)").matches ||
+  new URLSearchParams(window.location.search).has("static");
 
 document.getElementById("year").textContent = new Date().getFullYear();
 
@@ -773,8 +776,8 @@ fetch("assets/data/rank.json")
     }
     particles.rotation.y = t * 0.012;
 
-    // camera: gentle mouse sway + scroll drift
-    const drift = scrollY * 0.0009;
+    // camera: gentle mouse sway + scroll drift (capped so the scene never empties out on long pages)
+    const drift = Math.min(scrollY * 0.0009, 0.9);
     camera.position.x += (mouse.x * 0.5 - camera.position.x) * 0.03;
     camera.position.y += (0.4 - mouse.y * 0.3 - drift - camera.position.y) * 0.03;
     camera.lookAt(0, 0.2 - drift, -2);

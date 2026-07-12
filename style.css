@@ -792,8 +792,11 @@ body.has-cursor, body.has-cursor * { cursor: none !important; }
 @media (max-width: 700px) {
   #news { display: none; }
   .hud-bl { max-width: calc(100vw - 2.5rem); }
-  .nav-links { gap: 0.8rem; }
+  /* info HUD overlaps content on small screens once you scroll — fade it out */
+  body.scrolled #info-box { opacity: 0; pointer-events: none; }
+  .nav-links { gap: 0.7rem; }
   .nav-links a { font-size: 0.7rem; }
+  .nav-cta-long { display: none; } /* "Book a session" → "Book" so nothing clips */
   .brand span { display: none; }
   .section { padding: 22vh 1.5rem; }
   .plan-row { grid-template-columns: 1fr; gap: 0.75rem; }
