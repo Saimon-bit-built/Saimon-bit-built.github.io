@@ -634,6 +634,106 @@ body.scrolled #news { opacity: 0; pointer-events: none; }
   color: var(--muted);
 }
 
+/* ---------- Setup rows ---------- */
+.setup-rows { margin-top: 2.5rem; }
+
+.setup-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 1rem;
+  align-items: center;
+  padding: 1.1rem 0;
+  border-top: 1px solid var(--hairline);
+}
+.setup-rows .setup-row:last-child { border-bottom: 1px solid var(--hairline); }
+
+.setup-row span {
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--muted);
+}
+.setup-row strong { font-size: 0.95rem; font-weight: 650; text-align: right; }
+
+.setup-crosshair { grid-template-columns: auto 1fr auto; }
+.setup-crosshair strong {
+  font-family: Consolas, monospace;
+  font-size: 0.78rem;
+  text-align: left;
+  word-break: break-all;
+  color: var(--muted);
+}
+
+/* ---------- Testimonials ---------- */
+.quotes { margin-top: 2.5rem; }
+
+.quote {
+  padding: 1.6rem 0;
+  border-top: 1px solid var(--hairline);
+}
+.quotes .quote:last-child { border-bottom: 1px solid var(--hairline); }
+
+.quote p { font-size: 1.05rem; line-height: 1.6; max-width: 620px; }
+
+.quote footer { margin-top: 0.9rem; }
+.quote footer strong { display: block; font-size: 0.85rem; }
+.quote footer span {
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--accent);
+}
+
+/* ---------- Clip lightbox ---------- */
+#lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 96;
+  background: rgba(8, 10, 14, 0.96);
+  display: grid;
+  place-items: center;
+}
+#lightbox[hidden] { display: none; }
+
+#lightbox-close {
+  position: absolute;
+  top: 1.25rem; right: 1.5rem;
+  background: none;
+  border: 1px solid var(--hairline);
+  border-radius: 50%;
+  width: 2.4rem; height: 2.4rem;
+  color: var(--text);
+  font-size: 1rem;
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s;
+}
+#lightbox-close:hover { border-color: var(--accent); color: var(--accent); }
+
+.lightbox-inner {
+  width: min(1100px, 92vw);
+  text-align: center;
+}
+#lightbox-video {
+  width: 100%;
+  max-height: 76vh;
+  border-radius: 14px;
+  border: 1px solid var(--hairline);
+  background: #000;
+  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.6);
+}
+#lightbox-title {
+  margin-top: 0.9rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.work-circle { cursor: pointer; }
+
 /* ---------- Aim test ---------- */
 #aim {
   position: fixed;

@@ -173,7 +173,7 @@ if (discordBtn) {
   }
 
   const targets = document.querySelectorAll(
-    ".sec-label, .section h2, .sec-sub, .stats-row .stat, .timeline-item, .plan-row, .faq-item, .booking-form, .contact-alt, .contact-links, .contact-note"
+    ".sec-label, .section h2, .sec-sub, .stats-row .stat, .timeline-item, .plan-row, .faq-item, .setup-row, .quote, .booking-form, .contact-alt, .contact-links, .contact-note"
   );
   // stagger siblings within each parent
   const counts = new Map();
@@ -404,6 +404,62 @@ fetch("assets/data/rank.json")
     const subject = encodeURIComponent("Coaching request — " + (form.elements.riot.value || "new player"));
     const body = encodeURIComponent(buildMessage());
     window.location.href = `mailto:saimonnabi2@gmail.com?subject=${subject}&body=${body}`;
+  });
+})();
+
+/* ---------- Clip lightbox ---------- */
+(function initLightbox() {
+  const box = document.getElementById("lightbox");
+  if (!box) return;
+  const video = document.getElementById("lightbox-video");
+  const title = document.getElementById("lightbox-title");
+
+  function open(card) {
+    const src = card.querySelector("video");
+    if (!src) return;
+    document.querySelectorAll(".work-circle video").forEach((v) => v.pause());
+    video.src = src.currentSrc || src.getAttribute("src");
+    video.poster = src.getAttribute("poster") || "";
+    video.muted = false; // opened by a click, so unmuted playback is allowed
+    const sub = card.querySelector("figcaption span");
+    title.textContent = card.dataset.title + (sub ? ` — ${sub.textContent}` : "");
+    box.hidden = false;
+    video.play().catch(() => {
+      video.muted = true;
+      video.play().catch(() => {});
+    });
+  }
+
+  function close() {
+    video.pause();
+    video.removeAttribute("src");
+    video.load();
+    box.hidden = true;
+  }
+
+  document.querySelectorAll(".work-circle").forEach((card) => {
+    card.addEventListener("click", () => open(card));
+  });
+  document.getElementById("lightbox-close").addEventListener("click", close);
+  box.addEventListener("click", (e) => {
+    if (e.target === box) close();
+  });
+  window.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && !box.hidden) close();
+  });
+})();
+
+/* ---------- Crosshair code copy (setup section) ---------- */
+(function initCrosshairCopy() {
+  const btn = document.getElementById("crosshair-copy");
+  if (!btn) return;
+  btn.addEventListener("click", async () => {
+    const code = document.getElementById("crosshair-code").textContent.trim();
+    try {
+      await navigator.clipboard.writeText(code);
+      btn.textContent = "Copied ✓";
+      setTimeout(() => (btn.textContent = "Copy"), 2000);
+    } catch {}
   });
 })();
 

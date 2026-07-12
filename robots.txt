@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://saimon-bit-built.github.io/sitemap.xml
