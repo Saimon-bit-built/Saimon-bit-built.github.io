@@ -173,7 +173,7 @@ if (discordBtn) {
   }
 
   const targets = document.querySelectorAll(
-    ".sec-label, .section h2, .sec-sub, .stats-row .stat, .timeline-item, .plan-row, .faq-item, .setup-row, .quote, .booking-form, .contact-alt, .contact-links, .contact-note"
+    ".sec-label, .section h2, .sec-sub, .stats-row .stat, .timeline-item, .plan-row, .aim-callout, .faq-item, .setup-row, .quote, .booking-form, .contact-alt, .contact-links, .contact-note"
   );
   // stagger siblings within each parent
   const counts = new Map();
@@ -561,7 +561,7 @@ fetch("assets/data/rank.json")
   // whiffs: clicks on the play screen that miss the target
   screens.play.addEventListener("pointerdown", () => { if (running) whiffs++; });
 
-  document.getElementById("aim-open").addEventListener("click", open);
+  document.querySelectorAll("#aim-open, [data-aim-open]").forEach((b) => b.addEventListener("click", open));
   document.getElementById("aim-close").addEventListener("click", close);
   document.getElementById("aim-begin").addEventListener("click", start);
   document.getElementById("aim-retry").addEventListener("click", start);

@@ -506,6 +506,22 @@ body.scrolled #news { opacity: 0; pointer-events: none; }
 }
 .plan-side a:hover { color: var(--accent); border-color: var(--accent); }
 
+/* ---------- Aim test callout (coaching section) ---------- */
+.aim-callout {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  margin-top: 3.5rem;
+  padding: 1.6rem 1.75rem;
+  border: 1px solid var(--hairline);
+  border-radius: 16px;
+  background: rgba(238, 240, 246, 0.03);
+}
+.aim-callout h3 { font-size: 1.05rem; }
+.aim-callout p { color: var(--muted); font-size: 0.88rem; margin-top: 0.25rem; max-width: 400px; }
+
 /* ---------- FAQ: hairline rows ---------- */
 .faq-list { margin-top: 6rem; }
 
