@@ -60,6 +60,10 @@ main, .site-header { position: relative; z-index: 1; }
 }
 #intro.intro-done { opacity: 0; pointer-events: none; }
 
+/* failsafe: if scripts never run, the loader clears itself after 6s */
+@keyframes introFailsafe { to { opacity: 0; visibility: hidden; pointer-events: none; } }
+#intro { animation: introFailsafe 0.8s ease 6s forwards; }
+
 .intro-mark {
   position: absolute;
   top: 50%; left: 50%;
@@ -200,6 +204,48 @@ main, .site-header { position: relative; z-index: 1; }
 }
 
 #info-box p:last-child { color: var(--muted); line-height: 1.55; }
+
+/* live rank badge (fed by assets/data/rank.json via GitHub Action) */
+#rank-badge {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.72rem;
+  font-weight: 600;
+  margin: 0.1rem 0 0.45rem;
+}
+#rank-badge[hidden] { display: none; }
+#rank-badge em { font-style: normal; }
+.rank-dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--accent);
+  animation: rankPulse 2s ease-out infinite;
+}
+@keyframes rankPulse {
+  0%   { box-shadow: 0 0 0 0 rgba(255, 70, 85, 0.5); }
+  100% { box-shadow: 0 0 0 8px rgba(255, 70, 85, 0); }
+}
+
+.news-aim {
+  background: none;
+  border: none;
+  color: var(--muted);
+  font: inherit;
+  font-size: 0.85rem;
+  text-align: left;
+  padding: 0;
+  cursor: pointer;
+  line-height: 1.45;
+}
+.news-aim span {
+  display: block;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: var(--accent);
+}
+.news-aim:hover { color: var(--text); }
 
 #news ul { list-style: none; }
 #news li {
@@ -504,6 +550,134 @@ body.scrolled #news { opacity: 0; pointer-events: none; }
 .btn.ghost:hover { border-color: var(--accent); color: var(--accent); }
 
 .contact-note { margin-top: 1rem; color: var(--muted); font-size: 0.78rem; }
+
+/* ---------- Booking survey ---------- */
+.booking-form { margin-top: 2.5rem; }
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem 1.25rem;
+}
+.form-wide { grid-column: 1 / -1; }
+
+.booking-form label {
+  display: block;
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--muted);
+}
+
+.booking-form input,
+.booking-form select,
+.booking-form textarea {
+  display: block;
+  width: 100%;
+  margin-top: 0.4rem;
+  padding: 0.65rem 0.8rem;
+  font: inherit;
+  font-size: 0.88rem;
+  letter-spacing: normal;
+  text-transform: none;
+  color: var(--text);
+  background: rgba(238, 240, 246, 0.045);
+  border: 1px solid var(--hairline);
+  border-radius: 10px;
+  outline: none;
+  transition: border-color 0.2s;
+  resize: vertical;
+}
+.booking-form input:focus,
+.booking-form select:focus,
+.booking-form textarea:focus { border-color: var(--accent); }
+.booking-form select option { background: var(--surface); color: var(--text); }
+.booking-form ::placeholder { color: rgba(138, 144, 162, 0.6); }
+
+.form-actions {
+  display: flex;
+  gap: 0.8rem;
+  flex-wrap: wrap;
+  margin-top: 1.5rem;
+}
+.form-note { margin-top: 0.9rem; color: var(--muted); font-size: 0.78rem; }
+
+.contact-alt {
+  margin-top: 3rem;
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.25em;
+  color: var(--muted);
+}
+
+/* ---------- Aim test ---------- */
+#aim {
+  position: fixed;
+  inset: 0;
+  z-index: 95;
+  background: rgba(10, 12, 16, 0.97);
+}
+#aim[hidden] { display: none; }
+
+#aim-close {
+  position: absolute;
+  top: 1.25rem; right: 1.5rem;
+  background: none;
+  border: 1px solid var(--hairline);
+  border-radius: 50%;
+  width: 2.4rem; height: 2.4rem;
+  color: var(--text);
+  font-size: 1rem;
+  cursor: pointer;
+  z-index: 2;
+  transition: border-color 0.2s, color 0.2s;
+}
+#aim-close:hover { border-color: var(--accent); color: var(--accent); }
+
+.aim-screen {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  text-align: center;
+  padding: 2rem;
+}
+.aim-screen[hidden] { display: none; }
+.aim-screen-play { cursor: crosshair; }
+
+.aim-hud {
+  position: absolute;
+  top: 1.5rem; left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: var(--muted);
+}
+.aim-hud span { color: var(--text); }
+
+.aim-target {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #ff7580, var(--accent) 65%);
+  box-shadow: 0 0 24px rgba(255, 70, 85, 0.55);
+  cursor: crosshair;
+  animation: targetIn 0.12s ease-out;
+}
+@keyframes targetIn { from { transform: scale(0.3); } to { transform: scale(1); } }
+
+.aim-stats { color: var(--muted); font-size: 0.95rem; }
+.aim-quip { color: var(--text); font-size: 1.05rem; max-width: 480px; }
+.aim-actions { display: flex; gap: 0.8rem; flex-wrap: wrap; justify-content: center; }
+
+@media (max-width: 700px) {
+  .form-grid { grid-template-columns: 1fr; }
+}
 
 .site-footer {
   margin-top: 16vh;

@@ -1,0 +1,41 @@
+name: Update rank badge
+
+on:
+  schedule:
+    - cron: "0 6 * * *" # daily, 06:00 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  rank:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Fetch current rank from HenrikDev API
+        env:
+          KEY: ${{ secrets.HENRIK_API_KEY }}
+        run: |
+          if [ -z "$KEY" ]; then
+            echo "HENRIK_API_KEY secret not set - skipping (badge keeps last value)"
+            exit 0
+          fi
+          resp=$(curl -s -H "Authorization: $KEY" \
+            "https://api.henrikdev.xyz/valorant/v2/mmr/eu/Shraendraight/69690")
+          rank=$(echo "$resp" | jq -r '.data.current_data.currenttierpatched // empty')
+          if [ -z "$rank" ]; then
+            echo "API returned no rank - keeping existing value"
+            exit 0
+          fi
+          today=$(date -u +%Y-%m-%d)
+          printf '{"rank":"%s","updated":"%s"}\n' "$rank" "$today" > assets/data/rank.json
+          echo "Rank: $rank"
+
+      - name: Commit if changed
+        run: |
+          git config user.name "rank-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add assets/data/rank.json
+          git diff --cached --quiet || { git commit -m "Update rank badge"; git push; }

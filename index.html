@@ -15,6 +15,9 @@
   <meta name="color-scheme" content="dark" />
   <link rel="icon" type="image/png" href="assets/brand/favicon.png" />
   <link rel="stylesheet" href="style.css" />
+  <noscript>
+    <style>#intro, #grain, #cursor { display: none !important; }</style>
+  </noscript>
 </head>
 <body>
 
@@ -70,6 +73,7 @@
   <!-- HUD: bottom-left dynamic description -->
   <aside class="hud-bl" id="info-box">
     <p class="hud-label">Info</p>
+    <p id="rank-badge" hidden><span class="rank-dot"></span><em id="rank-text"></em></p>
     <p id="info-text">Valorant coach — Ascendant peak, EU. Founding student rates now open.</p>
   </aside>
 
@@ -80,6 +84,7 @@
       <li><span>2026.07</span>Founding student spots open — $10 VOD reviews</li>
       <li><span>2026</span>Peak Ascendant reached — top ~2%</li>
       <li><span>2025</span>The comeback: Gold → Diamond 2 in one year</li>
+      <li><button type="button" id="aim-open" class="news-aim"><span>// Aim test</span>Think you're cracked? Click here</button></li>
     </ul>
   </aside>
 
@@ -144,28 +149,28 @@
         <p class="sec-label works-label"><em>02</em> Highlights</p>
 
         <figure class="work-circle"
-                data-title="Highlight 01"
-                data-desc="Shraendraight — EU competitive.">
-          <video src="assets/clips/clip-1.mp4" muted loop playsinline preload="metadata"></video>
-          <figcaption><strong>Highlight 01</strong><span>EU Competitive</span></figcaption>
+                data-title="4K — A-Site Hold"
+                data-desc="Four kills holding A site on Pearl.">
+          <video src="assets/clips/clip-1.mp4" poster="assets/clips/poster-1.jpg" muted loop playsinline preload="metadata"></video>
+          <figcaption><strong>4K — A-Site Hold</strong><span>Pearl · EU Competitive</span></figcaption>
         </figure>
         <figure class="work-circle"
-                data-title="Highlight 02"
-                data-desc="Shraendraight — EU competitive.">
-          <video src="assets/clips/clip-2.mp4" muted loop playsinline preload="metadata"></video>
-          <figcaption><strong>Highlight 02</strong><span>EU Competitive</span></figcaption>
+                data-title="Jett 4K"
+                data-desc="Blade Storm up, four dropped on Bind.">
+          <video src="assets/clips/clip-2.mp4" poster="assets/clips/poster-2.jpg" muted loop playsinline preload="metadata"></video>
+          <figcaption><strong>Jett 4K</strong><span>Bind · EU Competitive</span></figcaption>
         </figure>
         <figure class="work-circle"
-                data-title="Highlight 03"
-                data-desc="Shraendraight — EU competitive.">
-          <video src="assets/clips/clip-3.mp4" muted loop playsinline preload="metadata"></video>
-          <figcaption><strong>Highlight 03</strong><span>EU Competitive</span></figcaption>
+                data-title="Jett Entry 3K"
+                data-desc="Dash in, three quick kills to open the round.">
+          <video src="assets/clips/clip-3.mp4" poster="assets/clips/poster-3.jpg" muted loop playsinline preload="metadata"></video>
+          <figcaption><strong>Jett Entry 3K</strong><span>Breeze · EU Competitive</span></figcaption>
         </figure>
         <figure class="work-circle"
-                data-title="Highlight 04"
-                data-desc="Shraendraight — EU competitive.">
-          <video src="assets/clips/clip-4.mp4" muted loop playsinline preload="metadata"></video>
-          <figcaption><strong>Highlight 04</strong><span>EU Competitive</span></figcaption>
+                data-title="Reyna Sheriff 3K"
+                data-desc="Three Sheriff kills on B site.">
+          <video src="assets/clips/clip-4.mp4" poster="assets/clips/poster-4.jpg" muted loop playsinline preload="metadata"></video>
+          <figcaption><strong>Reyna Sheriff 3K</strong><span>Bind · EU Competitive</span></figcaption>
         </figure>
       </div>
     </section>
@@ -252,9 +257,52 @@
     <section id="contact" class="section contact" data-word="BOOK" data-word-opacity="0.12" data-info="Fastest reply on Discord: shraendraight.">
       <p class="sec-label"><em>04</em> Contact</p>
       <h2>Book a session.</h2>
-      <p class="sec-sub">Message me on Discord with your rank, role, and what you're struggling
-      with — I'll reply with available times.</p>
+      <p class="sec-sub">Fill in the quick survey so I know where you're at — it writes the
+      message for you. I'll reply with available times.</p>
 
+      <form class="booking-form" id="booking" novalidate>
+        <div class="form-grid">
+          <label>Riot ID
+            <input name="riot" type="text" placeholder="Name#TAG" autocomplete="off" />
+          </label>
+          <label>Current rank
+            <select name="rank">
+              <option value="">Select…</option>
+              <option>Unranked</option><option>Iron</option><option>Bronze</option>
+              <option>Silver</option><option>Gold</option><option>Platinum</option>
+              <option>Diamond</option><option>Ascendant</option><option>Immortal+</option>
+            </select>
+          </label>
+          <label>Main role / agents
+            <input name="mains" type="text" placeholder="e.g. Duelist — Jett, Reyna" autocomplete="off" />
+          </label>
+          <label>Hours played per week
+            <select name="hours">
+              <option value="">Select…</option>
+              <option>Under 5</option><option>5–10</option><option>10–20</option><option>20+</option>
+            </select>
+          </label>
+          <label class="form-wide">Biggest struggle right now
+            <textarea name="struggle" rows="3" placeholder="e.g. I win my duels but still lose rounds and don't know why…"></textarea>
+          </label>
+          <label>Session type
+            <select name="plan">
+              <option value="">Select…</option>
+              <option>VOD Review — $10</option>
+              <option>Live 1-on-1 — $15/hr</option>
+              <option>Rank-Up Program — $80/mo</option>
+              <option>Not sure yet</option>
+            </select>
+          </label>
+        </div>
+        <div class="form-actions">
+          <button type="button" class="btn primary" id="send-discord">Copy &amp; send on Discord</button>
+          <button type="button" class="btn ghost" id="send-email">Send by email</button>
+        </div>
+        <p class="form-note" id="form-note">No account needed — this just writes the message for you.</p>
+      </form>
+
+      <p class="contact-alt">Or reach me directly:</p>
       <div class="contact-links">
         <button class="btn primary" id="discord-copy" type="button" data-username="shraendraight">
           Discord — shraendraight
@@ -271,7 +319,30 @@
 
   </main>
 
-  <script src="https://unpkg.com/three@0.158.0/build/three.min.js"></script>
+  <!-- Aim test easter egg (type "aim" or use the news link) -->
+  <div id="aim" hidden>
+    <button id="aim-close" type="button" aria-label="Close">✕</button>
+    <div class="aim-screen" id="aim-start">
+      <p class="sec-label"><em>//</em> Aim Test</p>
+      <h2>15 seconds. Click the dots.<br />Don't whiff.</h2>
+      <button class="btn primary" id="aim-begin" type="button">Start</button>
+    </div>
+    <div class="aim-screen aim-screen-play" id="aim-play" hidden>
+      <p class="aim-hud"><span id="aim-time">15.0</span>s &nbsp;·&nbsp; <span id="aim-hits">0</span> hits</p>
+    </div>
+    <div class="aim-screen" id="aim-end" hidden>
+      <p class="sec-label"><em>//</em> Results</p>
+      <h2 id="aim-score"></h2>
+      <p class="aim-stats" id="aim-stats"></p>
+      <p class="aim-quip" id="aim-quip"></p>
+      <div class="aim-actions">
+        <button class="btn primary" id="aim-book" type="button">Fix it — book a session</button>
+        <button class="btn ghost" id="aim-retry" type="button">Retry</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="assets/vendor/three.min.js"></script>
   <script src="main.js"></script>
 </body>
 </html>

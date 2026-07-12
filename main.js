@@ -105,7 +105,7 @@ if (discordBtn) {
   }
 
   const targets = document.querySelectorAll(
-    ".sec-label, .section h2, .sec-sub, .stats-row .stat, .timeline-item, .plan-row, .faq-item, .contact-links, .contact-note"
+    ".sec-label, .section h2, .sec-sub, .stats-row .stat, .timeline-item, .plan-row, .faq-item, .booking-form, .contact-alt, .contact-links, .contact-note"
   );
   // stagger siblings within each parent
   const counts = new Map();
@@ -286,6 +286,176 @@ document.querySelectorAll("[data-word]").forEach((el) => sectionObserver.observe
   window.addEventListener("scroll", requestUpdate, { passive: true });
   window.addEventListener("resize", requestUpdate);
   update();
+})();
+
+/* ---------- Live rank badge (assets/data/rank.json, refreshed by GitHub Action) ---------- */
+fetch("assets/data/rank.json")
+  .then((r) => (r.ok ? r.json() : null))
+  .then((d) => {
+    if (!d || !d.rank) return;
+    document.getElementById("rank-text").textContent = `Current rank: ${d.rank} · ${d.updated}`;
+    document.getElementById("rank-badge").hidden = false;
+  })
+  .catch(() => {}); // file:// or fetch failure — badge stays hidden
+
+/* ---------- Booking survey: builds the message, no backend needed ---------- */
+(function initBookingForm() {
+  const form = document.getElementById("booking");
+  if (!form) return;
+  const note = document.getElementById("form-note");
+  const noteDefault = note.textContent;
+
+  function buildMessage() {
+    const v = (name) => (form.elements[name].value || "—").trim();
+    return [
+      "New coaching request — via the site",
+      `Riot ID: ${v("riot")}`,
+      `Current rank: ${v("rank")}`,
+      `Mains: ${v("mains")}`,
+      `Hours/week: ${v("hours")}`,
+      `Session type: ${v("plan")}`,
+      `Biggest struggle: ${v("struggle")}`,
+    ].join("\n");
+  }
+
+  function flashNote(text) {
+    note.textContent = text;
+    setTimeout(() => (note.textContent = noteDefault), 5000);
+  }
+
+  document.getElementById("send-discord").addEventListener("click", async () => {
+    try {
+      await navigator.clipboard.writeText(buildMessage());
+      flashNote("Copied! Now paste it to me in a Discord DM — username: shraendraight ✓");
+    } catch {
+      flashNote("Couldn't copy automatically — use the email button instead.");
+    }
+  });
+
+  document.getElementById("send-email").addEventListener("click", () => {
+    const subject = encodeURIComponent("Coaching request — " + (form.elements.riot.value || "new player"));
+    const body = encodeURIComponent(buildMessage());
+    window.location.href = `mailto:saimonnabi2@gmail.com?subject=${subject}&body=${body}`;
+  });
+})();
+
+/* ---------- Aim test easter egg ---------- */
+(function initAimTest() {
+  const overlay = document.getElementById("aim");
+  if (!overlay) return;
+  const screens = {
+    start: document.getElementById("aim-start"),
+    play: document.getElementById("aim-play"),
+    end: document.getElementById("aim-end"),
+  };
+  const timeEl = document.getElementById("aim-time");
+  const hitsEl = document.getElementById("aim-hits");
+  const DURATION = 15;
+  const TARGET_LIFETIME = 1200; // ms before a dot counts as missed
+  let running = false;
+  let hits, whiffs, timeouts, reactions, endAt, target, spawnedAt, lifeTimer, rafId;
+
+  function show(name) {
+    Object.entries(screens).forEach(([k, el]) => (el.hidden = k !== name));
+  }
+
+  function open() {
+    overlay.hidden = false;
+    show("start");
+  }
+  function close() {
+    stopRun();
+    overlay.hidden = true;
+  }
+
+  function spawnTarget() {
+    if (target) target.remove();
+    const size = 40 + Math.random() * 28;
+    target = document.createElement("button");
+    target.className = "aim-target";
+    target.type = "button";
+    target.style.width = target.style.height = `${size}px`;
+    target.style.left = `${8 + Math.random() * 84}%`;
+    target.style.top = `${14 + Math.random() * 72}%`;
+    spawnedAt = performance.now();
+    target.addEventListener("pointerdown", (e) => {
+      e.stopPropagation();
+      hits++;
+      reactions.push(performance.now() - spawnedAt);
+      hitsEl.textContent = hits;
+      clearTimeout(lifeTimer);
+      spawnTarget();
+    });
+    lifeTimer = setTimeout(() => {
+      timeouts++;
+      spawnTarget();
+    }, TARGET_LIFETIME);
+    screens.play.appendChild(target);
+  }
+
+  function stopRun() {
+    running = false;
+    clearTimeout(lifeTimer);
+    cancelAnimationFrame(rafId);
+    if (target) { target.remove(); target = null; }
+  }
+
+  function start() {
+    hits = 0; whiffs = 0; timeouts = 0; reactions = [];
+    hitsEl.textContent = "0";
+    running = true;
+    show("play");
+    endAt = performance.now() + DURATION * 1000;
+    spawnTarget();
+    (function tick() {
+      const left = Math.max(0, endAt - performance.now());
+      timeEl.textContent = (left / 1000).toFixed(1);
+      if (left <= 0) return finish();
+      rafId = requestAnimationFrame(tick);
+    })();
+  }
+
+  function finish() {
+    stopRun();
+    const shots = hits + whiffs;
+    const acc = shots ? Math.round((hits / shots) * 100) : 0;
+    const avg = reactions.length
+      ? Math.round(reactions.reduce((a, b) => a + b, 0) / reactions.length)
+      : 0;
+    document.getElementById("aim-score").textContent = `${hits} hits`;
+    document.getElementById("aim-stats").textContent =
+      `${acc}% accuracy · ${avg} ms average reaction · ${timeouts} too slow`;
+    const quip =
+      hits >= 22 ? "Okay, you're cracked. Now imagine that aim with actual game sense." :
+      hits >= 16 ? "Solid hands. So why are you still stuck? (It's the decision-making.)" :
+      hits >= 10 ? "Decent — but decent aim with bad positioning is still a lost round." :
+      "Rough. Good news: aim is the easiest thing to train. I'll show you how.";
+    document.getElementById("aim-quip").textContent = quip;
+    show("end");
+  }
+
+  // whiffs: clicks on the play screen that miss the target
+  screens.play.addEventListener("pointerdown", () => { if (running) whiffs++; });
+
+  document.getElementById("aim-open").addEventListener("click", open);
+  document.getElementById("aim-close").addEventListener("click", close);
+  document.getElementById("aim-begin").addEventListener("click", start);
+  document.getElementById("aim-retry").addEventListener("click", start);
+  document.getElementById("aim-book").addEventListener("click", () => {
+    close();
+    document.getElementById("contact").scrollIntoView({ behavior: "smooth" });
+  });
+  window.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && !overlay.hidden) close();
+  });
+
+  // hidden trigger: type "aim"
+  let buffer = "";
+  window.addEventListener("keydown", (e) => {
+    if (e.target.matches("input, textarea, select")) return;
+    buffer = (buffer + e.key.toLowerCase()).slice(-3);
+    if (buffer === "aim" && overlay.hidden) open();
+  });
 })();
 
 /* ---------- Clip playback on phones / reduced motion (static circle layout) ---------- */
