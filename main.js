@@ -10,6 +10,71 @@ const REDUCE_MOTION =
 
 document.getElementById("year").textContent = new Date().getFullYear();
 
+/* ---------- Sound (off by default; toggle in the nav) ---------- */
+const sound = { on: localStorage.getItem("shraen-sound") === "on" };
+let audioCtx = null;
+
+// tiny synthesized UI blip — no audio files needed
+function uiTick(freq, dur = 0.04, vol = 0.035) {
+  if (!sound.on) return;
+  try {
+    audioCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)();
+    if (audioCtx.state === "suspended") audioCtx.resume();
+    const o = audioCtx.createOscillator();
+    const g = audioCtx.createGain();
+    o.type = "sine";
+    o.frequency.value = freq;
+    g.gain.setValueAtTime(vol, audioCtx.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + dur);
+    o.connect(g);
+    g.connect(audioCtx.destination);
+    o.start();
+    o.stop(audioCtx.currentTime + dur);
+  } catch {}
+}
+
+// play a highlight clip honoring the sound setting; falls back to muted
+// if the browser blocks unmuted playback
+function playClip(v) {
+  v.muted = !sound.on;
+  const p = v.play();
+  if (p) p.catch(() => {
+    v.muted = true;
+    v.play().catch(() => {});
+  });
+}
+
+(function initSoundToggle() {
+  const btn = document.getElementById("sound-toggle");
+  if (!btn) return;
+  const txt = btn.querySelector(".s-txt");
+
+  function apply() {
+    btn.classList.toggle("on", sound.on);
+    btn.setAttribute("aria-pressed", String(sound.on));
+    txt.textContent = sound.on ? "Sound: On" : "Sound: Off";
+    document.querySelectorAll(".work-circle video").forEach((v) => (v.muted = !sound.on));
+  }
+
+  btn.addEventListener("click", () => {
+    sound.on = !sound.on;
+    localStorage.setItem("shraen-sound", sound.on ? "on" : "off");
+    apply();
+    uiTick(sound.on ? 1568 : 660, 0.07, 0.05);
+  });
+  apply();
+
+  // soft tick when the cursor enters something clickable
+  window.addEventListener("pointerover", (e) => {
+    if (!sound.on || !e.target.closest) return;
+    const hit = e.target.closest("a, button, summary");
+    const from = e.relatedTarget && e.relatedTarget.closest
+      ? e.relatedTarget.closest("a, button, summary")
+      : null;
+    if (hit && hit !== from) uiTick(1200, 0.03, 0.02);
+  });
+})();
+
 /* ---------- Intro loader: logo draws itself, fills, tagline, fade out ---------- */
 (function initIntro() {
   const intro = document.getElementById("intro");
@@ -263,7 +328,7 @@ document.querySelectorAll("[data-word]").forEach((el) => sectionObserver.observe
       c.classList.toggle("is-center", isCenter);
       const v = c.querySelector("video");
       if (v) {
-        if (isCenter && v.paused) v.play().catch(() => {});
+        if (isCenter && v.paused) playClip(v);
         else if (!isCenter && !v.paused) v.pause();
       }
     });
@@ -467,7 +532,7 @@ fetch("assets/data/rank.json")
   const vio = new IntersectionObserver(
     (entries) => {
       for (const e of entries) {
-        if (e.isIntersecting) e.target.play().catch(() => {});
+        if (e.isIntersecting) playClip(e.target);
         else e.target.pause();
       }
     },

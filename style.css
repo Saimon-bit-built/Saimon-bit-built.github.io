@@ -182,6 +182,28 @@ main, .site-header { position: relative; z-index: 1; }
 .nav-links a:last-child { color: var(--text); border-bottom: 1px solid var(--text); padding-bottom: 2px; }
 .nav-links a:last-child:hover { color: var(--accent); border-color: var(--accent); }
 
+#sound-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.78rem;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+  transition: color 0.2s;
+}
+#sound-toggle:hover { color: var(--text); }
+#sound-toggle .s-ico { font-size: 0.55rem; border-radius: 50%; transition: color 0.2s; }
+#sound-toggle.on { color: var(--text); }
+#sound-toggle.on .s-ico {
+  color: var(--accent);
+  animation: rankPulse 2s ease-out infinite;
+}
+
 /* ---------- HUD (tiny, chrome-less, alche-style) ---------- */
 .hud-bl, .hud-br {
   position: fixed;
@@ -797,6 +819,7 @@ body.has-cursor, body.has-cursor * { cursor: none !important; }
   .nav-links { gap: 0.7rem; }
   .nav-links a { font-size: 0.7rem; }
   .nav-cta-long { display: none; } /* "Book a session" → "Book" so nothing clips */
+  #sound-toggle .s-txt { display: none; } /* icon-only sound toggle on phones */
   .brand span { display: none; }
   .section { padding: 22vh 1.5rem; }
   .plan-row { grid-template-columns: 1fr; gap: 0.75rem; }
