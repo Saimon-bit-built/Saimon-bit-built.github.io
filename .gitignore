@@ -1,3 +1,6 @@
 # original uncompressed clips stay local — only the compressed clip-N.mp4 files deploy
 assets/clips/Clip *.mp4
 _*.png
+node_modules/
+package.json
+package-lock.json
